@@ -1,0 +1,7 @@
+server:
+  port: 8088
+minio:
+  endpoint: http://127.0.0.1:9000
+  bucketName: dev
+  accessKey: minioadmin
+  secretKey: minioadmin

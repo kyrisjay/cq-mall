@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Map;
+
 public class TokenServiceGenerateTest {
 
     private TokenService tokenService = new TokenServiceImpl();
@@ -38,12 +40,18 @@ public class TokenServiceGenerateTest {
     // TODO
     @Test
     public void refreshExpiredDateTest() {
+        String token = tokenService.generateToken("test");
+        String token1 = tokenService.refreshExpireDate(token);
+        assertTrue(tokenService.getExpireSec(token) <= tokenService.getExpireSec(token1));
 
     }
 
     // TODO
     @Test
     public void generateTokenFromMapTest() {
+        String token = tokenService.generateToken("test");
+        Map<String, Object> map = tokenService.parseMap(token);
+        tokenService.generateToken(map);
 
     }
 

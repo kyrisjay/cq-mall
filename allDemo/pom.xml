@@ -18,6 +18,7 @@
         <module>redis</module>
         <module>jwt</module>
         <module>authentication</module>
+        <module>authorization</module>
     </modules>
 
     <dependencies>

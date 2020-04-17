@@ -1,5 +1,7 @@
 package club.banyuan.demo.authentication.common;
 
+import cn.hutool.json.JSONUtil;
+
 public class ResponseResult {
     /**
      * code : 200
@@ -18,6 +20,14 @@ public class ResponseResult {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+
+    public ResponseResult(ResponseCode code) {
+        this(code.getCode(), code.getMessage(), "");
+    }
+
+    public ResponseResult(ResponseCode code, Object data) {
+        this(code.getCode(), code.getMessage(), data);
     }
 
     public int getCode() {
@@ -48,4 +58,18 @@ public class ResponseResult {
         return new ResponseResult(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMessage(),
                 data);
     }
+
+    public  static  ResponseResult forbidden(){
+        return  new ResponseResult(ResponseCode.FORBIDDEN);
+    }
+
+    public static ResponseResult forbidden(Object data) {
+        return new ResponseResult(ResponseCode.FORBIDDEN, data);
+    }
+
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonStr(this);
+    }
+
 }

@@ -1,7 +1,11 @@
 package club.banyuan.demo.authentication.common;
 
+import org.springframework.web.client.HttpClientErrorException;
+
 public enum ResponseCode {
-    SUCCESS(200, "操作成功");
+    SUCCESS(200, "操作成功"),
+    FORBIDDEN(403,"用户未授权"),
+    ;
 
     private final int code;
     private final String message;

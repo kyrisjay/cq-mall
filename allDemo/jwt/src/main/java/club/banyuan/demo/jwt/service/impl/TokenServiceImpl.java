@@ -37,13 +37,24 @@ public class TokenServiceImpl implements TokenService {
                 .compact();
     }
 
+    /**
+     * 从令牌中获取用户名
+     *
+     * @param token 令牌
+     * @return 用户名
+     */
     @Override
     public String parseSubject(String token) {
         Claims claims = getBody(token);
         validateBody(claims);
         return claims.getSubject();
     }
-
+    /**
+     * 验证令牌
+     *
+     * @param
+     * @return 是否有效
+     */
     private void validateBody(Claims claims) {
         if (claims.getExpiration() == null || claims.getExpiration().getTime() <= System
                 .currentTimeMillis()) {
@@ -51,16 +62,34 @@ public class TokenServiceImpl implements TokenService {
         }
     }
 
+    /**
+     * 从令牌判断是否过期,返回true为过期
+     *
+     * @param token 令牌
+     * @return 是否过期
+     */
     @Override
     public boolean isExpired(String token) {
         return getExpireSec(token) <= 0;
     }
 
+    /**
+     * 从令牌中获取令牌剩余时间，小于等于0即是过期
+     *
+     * @param token 令牌
+     * @return 过期剩余时间
+     */
     @Override
     public long getExpireSec(String token) {
         return (getBody(token).getExpiration().getTime() - System.currentTimeMillis()) / 1000;
     }
 
+    /**
+     * 刷新令牌
+     *
+     * @param token 原令牌
+     * @return 新令牌
+     */
     @Override
     public String refreshExpireDate(String token) {
         Claims claims = getBody(token);
@@ -72,9 +101,15 @@ public class TokenServiceImpl implements TokenService {
     // TODO
     @Override
     public Map<String, Object> parseMap(String token) {
-        return null;
-    }
 
+        return getBody(token);
+    }
+    /**
+     * 从令牌中获取数据声明,过期也强行获取
+     *
+     * @param token 令牌
+     * @return 数据声明
+     */
     private Claims getBody(String token) {
         try {
             return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();

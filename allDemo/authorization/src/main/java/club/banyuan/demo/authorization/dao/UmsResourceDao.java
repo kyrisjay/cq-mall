@@ -17,4 +17,5 @@ public interface UmsResourceDao {
     int updateByPrimaryKey(UmsResource record);
 
     List<UmsResource> selectAll();
+    List<UmsResource> selectByAdminId(Long id);
 }

@@ -1,5 +1,7 @@
 package club.banyuan.demo.authorization.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
@@ -13,9 +15,14 @@ import java.io.IOException;
 // 然后比较路径资源是否在用户资源列表中
 public class DynamicResourceFilter extends AbstractSecurityInterceptor implements Filter {
 
+    @Autowired
+    private DynamicMetadataSource dynamicMetadataSource;
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
+
+
+
         FilterInvocation filterInvocation = new FilterInvocation(servletRequest, servletResponse,
                 filterChain);
         // // 权限查询，通过request，查询到token， token中的用户名查询权限。查询资源列表。
@@ -32,7 +39,11 @@ public class DynamicResourceFilter extends AbstractSecurityInterceptor implement
             super.afterInvocation(token, null);
         }
     }
-
+    @Autowired
+    @Override
+    public void setAccessDecisionManager(AccessDecisionManager accessDecisionManager) {
+        super.setAccessDecisionManager(accessDecisionManager);
+    }
     @Override
     public Class<?> getSecureObjectClass() {
         return FilterInvocation.class;
@@ -40,6 +51,6 @@ public class DynamicResourceFilter extends AbstractSecurityInterceptor implement
 
     @Override
     public SecurityMetadataSource obtainSecurityMetadataSource() {
-        return null;
+        return dynamicMetadataSource;
     }
 }

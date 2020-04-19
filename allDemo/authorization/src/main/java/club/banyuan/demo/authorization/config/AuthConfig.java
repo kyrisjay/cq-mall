@@ -1,15 +1,20 @@
 package club.banyuan.demo.authorization.config;
 
 import club.banyuan.demo.authorization.security.AuthenticationFailHandler;
+import club.banyuan.demo.authorization.security.DynamicResourceFilter;
 import club.banyuan.demo.authorization.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -36,8 +41,14 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
         beanFactory.autowireBean(jwtAuthenticationFilter);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        DynamicResourceFilter dynamicResourceFilter = new DynamicResourceFilter();
+        beanFactory.autowireBean(dynamicResourceFilter);
+        http.addFilterBefore(dynamicResourceFilter, FilterSecurityInterceptor.class);
+    }
 
-
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }

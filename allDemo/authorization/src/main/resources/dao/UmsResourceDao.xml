@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -25,6 +24,19 @@
         <include refid="Base_Column_List"/>
         from ums_resource
     </select>
+    <select id="selectByAdminId" resultMap="BaseResultMap">
+    SELECT ur.id,
+           ur.create_time,
+           ur.`name`,
+           ur.url,
+           ur.description,
+           ur.category_id
+    FROM ums_resource ur
+           LEFT JOIN ums_role_resource_relation urrr ON ur.id = urrr.resource_id
+           LEFT JOIN ums_admin_role_relation uarr ON urrr.role_id = uarr.role_id
+    WHERE uarr.admin_id = #{id,jdbcType=BIGINT}
+    GROUP BY ur.id
+  </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     DELETE
     FROM ums_resource

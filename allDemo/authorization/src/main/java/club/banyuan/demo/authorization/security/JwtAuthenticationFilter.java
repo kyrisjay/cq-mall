@@ -1,9 +1,13 @@
 package club.banyuan.demo.authorization.security;
 
+import club.banyuan.demo.authorization.service.AdminService;
 import club.banyuan.demo.authorization.service.TokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -18,8 +22,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String SCHEMA = "Bearer";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     @Autowired
-    private TokenService tokenService;
+    private AdminService adminService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -30,16 +36,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // token 认证
             String token = authHead.substring(SCHEMA.length());
             try {
-                String subject = tokenService.parseSubject(token);
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        subject, null, null);
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                UserDetails userDetails = adminService.getUserDetailsByToken(token);
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+                    authenticationToken.setDetails(userDetails);
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+               LOGGER.warn("认证异常，e");
             }
         }
-
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

@@ -18,4 +18,9 @@ public class UmsResourceServiceImpl implements UmsResourceService {
     public List<UmsResource> getAllResource() {
         return umsResourceDao.selectAll();
     }
+
+    @Override
+    public List<UmsResource> getResourcesByAdminId(Long id) {
+        return umsResourceDao.selectByAdminId(id);
+    }
 }

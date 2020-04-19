@@ -77,7 +77,7 @@ public class TokenServiceImpl implements TokenService {
     // TODO
     @Override
     public Map<String, Object> parseMap(String token) {
-        return null;
+        return getBody(token);
     }
 
     private Claims getBody(String token) {

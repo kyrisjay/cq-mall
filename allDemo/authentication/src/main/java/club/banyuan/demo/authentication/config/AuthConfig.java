@@ -3,6 +3,7 @@ package club.banyuan.demo.authentication.config;
 
 import club.banyuan.demo.authentication.security.AuthenticationFailHandler;
 import club.banyuan.demo.authentication.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class AuthConfig extends WebSecurityConfigurerAdapter {
-
+    @Autowired
     private AutowireCapableBeanFactory beanFactory;
 
     @Override

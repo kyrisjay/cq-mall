@@ -31,6 +31,11 @@ public class ResponseResult {
         this(code.getCode(), code.getMessage(), data);
     }
 
+    public static ResponseResult unauthorized() {
+        return new ResponseResult(ResponseCode.UNAUTHORIZED);
+    }
+
+
     public int getCode() {
         return code;
     }

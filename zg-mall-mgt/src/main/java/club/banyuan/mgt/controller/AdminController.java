@@ -9,6 +9,8 @@ import club.banyuan.mgt.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -21,9 +23,12 @@ public class AdminController {
         AdminLoginResp adminLoginResp = adminService.login(adminLoginReq);
         return ResponseResult.success(adminLoginResp);
     }
-    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult auth() {
+    public ResponseResult info(Principal principal) {
+       Long adminId=Long.parseLong(principal.getName());
+       adminService.getInfo(adminId);
+
         return ResponseResult.success("success");
     }
 }

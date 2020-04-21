@@ -2,7 +2,8 @@ package club.banyuan.mgt.common;
 
 public enum ResponseCode {
     SUCCESS(200, "操作成功"),
-    FORBIDDEN(403, "用户未授权"),
+    FORBIDDEN(401, "用户身份验证失败"),
+    UNAUTHORIZED(403, "用户未授权");
     ;
 
     private final int code;

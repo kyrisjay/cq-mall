@@ -1,16 +1,20 @@
 package club.banyuan.mgt.service.impl;
 
-import club.banyuan.demo.authorization.dao.UmsAdminDao;
-import club.banyuan.demo.authorization.dao.entity.UmsAdmin;
-import club.banyuan.demo.authorization.dao.entity.UmsAdminExample;
-import club.banyuan.demo.authorization.dao.entity.UmsResource;
-import club.banyuan.demo.authorization.dto.AdminLoginReq;
-import club.banyuan.demo.authorization.dto.AdminLoginResp;
-import club.banyuan.demo.authorization.security.AdminUserDetails;
-import club.banyuan.demo.authorization.security.ResourceConfigAttribute;
-import club.banyuan.demo.authorization.service.AdminService;
-import club.banyuan.demo.authorization.service.TokenService;
-import club.banyuan.demo.authorization.service.UmsResourceService;
+
+import club.banyuan.mgt.dao.UmsAdminDao;
+import club.banyuan.mgt.dao.UmsMenuDao;
+import club.banyuan.mgt.dao.UmsRoleDao;
+import club.banyuan.mgt.dao.entity.*;
+import club.banyuan.mgt.dto.AdminInfoResp;
+import club.banyuan.mgt.dto.AdminLoginReq;
+import club.banyuan.mgt.dto.AdminLoginResp;
+import club.banyuan.mgt.dto.AdminMenusResp;
+import club.banyuan.mgt.security.AdminUserDetails;
+import club.banyuan.mgt.security.ResourceConfigAttribute;
+import club.banyuan.mgt.service.AdminService;
+import club.banyuan.mgt.service.TokenService;
+import club.banyuan.mgt.service.UmsResourceService;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -28,8 +33,15 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private TokenService tokenService;
+
     @Autowired
     private UmsAdminDao umsAdminDao;
+
+    @Autowired
+    private UmsRoleDao umsRoleDao;
+
+    @Autowired
+    private UmsMenuDao umsMenuDao;
 
     @Autowired
     private UmsResourceService umsResourceService;
@@ -69,7 +81,31 @@ public class AdminServiceImpl implements AdminService {
         if (CollUtil.isNotEmpty(adminResources)) {
             adminResources.forEach(t -> grantedAuthorities.add(new ResourceConfigAttribute(t)));
         }
-
         return new AdminUserDetails(umsAdmin, grantedAuthorities);
+    }
+
+    @Override
+    public AdminInfoResp getInfo(long adminId) {
+        UmsAdmin umsAdmin = umsAdminDao.selectByPrimaryKey(adminId);
+
+        AdminInfoResp adminInfoResp = new AdminInfoResp();
+        adminInfoResp.setIcon(umsAdmin.getIcon());
+        adminInfoResp.setUsername(umsAdmin.getUsername());
+
+        List<UmsRole> umsRoleList = umsRoleDao.selectByAdminId(umsAdmin.getId());
+        if (CollUtil.isEmpty(umsRoleList)) {
+            throw new RuntimeException("角色列表为空");
+        }
+
+        List<UmsMenu> umsMenus = umsMenuDao
+                .selectByRoleIds(umsRoleList.stream().map(UmsRole::getId).collect(Collectors.toList()));
+        adminInfoResp.setMenus(umsMenus.stream().map(t -> {
+            AdminMenusResp adminMenusResp = new AdminMenusResp();
+            BeanUtil.copyProperties( t,adminMenusResp);
+            return adminMenusResp;
+        }).collect(Collectors.toList()));
+
+        adminInfoResp.setRoles(umsRoleList.stream().map(UmsRole::getName).collect(Collectors.toList()));
+        return adminInfoResp;
     }
 }

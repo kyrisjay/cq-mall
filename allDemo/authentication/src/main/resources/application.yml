@@ -5,3 +5,4 @@ server:
 token:
   secretKey: banyuan
   expireSec: 3600
+

@@ -1,9 +1,13 @@
 package club.banyuan.mgt.controller;
 
 import club.banyuan.mgt.common.ResponseResult;
+import club.banyuan.mgt.dto.UmsRoleRep;
 import club.banyuan.mgt.service.UmsRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/role")
@@ -21,4 +25,29 @@ public class UmsRoleController {
     ) {
         return ResponseResult.success(umsRoleService.listByPages(pageNum, pageSize, keyword));
     }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult create(@RequestBody @Valid UmsRoleRep umsRoleRep) {
+
+        return ResponseResult
+                .success(umsRoleService.create(umsRoleRep));
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult update(@RequestBody @Valid UmsRoleRep umsRoleRep, @PathVariable Long id) {
+
+        return ResponseResult
+                .success(umsRoleService.update(umsRoleRep, id));
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult update(@RequestParam @NotNull Long ids) {
+
+        return ResponseResult
+                .success(umsRoleService.delete(ids));
+    }
+
 }

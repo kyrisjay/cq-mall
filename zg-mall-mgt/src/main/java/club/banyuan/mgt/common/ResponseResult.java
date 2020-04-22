@@ -2,6 +2,9 @@ package club.banyuan.mgt.common;
 
 import cn.hutool.json.JSONUtil;
 
+import static club.banyuan.mgt.common.ResponseCode.FAILED;
+import static club.banyuan.mgt.common.ResponseCode.REQUEST_FAIL;
+
 public class ResponseResult {
 
     /**
@@ -34,7 +37,13 @@ public class ResponseResult {
     public static ResponseResult unauthorized() {
         return new ResponseResult(ResponseCode.UNAUTHORIZED);
     }
+    public static ResponseResult badRequest(String message) {
+        return new ResponseResult(REQUEST_FAIL, message);
+    }
 
+    public static ResponseResult failed(String message) {
+        return new ResponseResult(FAILED, message);
+    }
 
     public int getCode() {
         return code;

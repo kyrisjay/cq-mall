@@ -29,7 +29,7 @@ public class AdminController {
        Long adminId=Long.parseLong(principal.getName());
        adminService.getInfo(adminId);
 
-        return ResponseResult.success("success");
+        return ResponseResult.success(adminService.getInfo(adminId));
     }
 }
 

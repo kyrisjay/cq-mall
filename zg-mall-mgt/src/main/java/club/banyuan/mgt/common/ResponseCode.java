@@ -2,8 +2,10 @@ package club.banyuan.mgt.common;
 
 public enum ResponseCode {
     SUCCESS(200, "操作成功"),
+    REQUEST_FAIL(400, "操作失败"),
     FORBIDDEN(401, "用户身份验证失败"),
-    UNAUTHORIZED(403, "用户未授权");
+    UNAUTHORIZED(403, "用户未授权"),
+    FAILED(500, "服务器内部错误")
     ;
 
     private final int code;

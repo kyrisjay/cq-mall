@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/role")
@@ -48,6 +52,24 @@ public class UmsRoleController {
 
         return ResponseResult
                 .success(umsRoleService.delete(ids));
+    }
+
+    @RequestMapping(value = "/listMenu/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult listMenu(@PathVariable @NotNull Long id) {
+        return ResponseResult
+                .success(umsRoleService.listMenu(id));
+    }
+
+    @RequestMapping(value = "/allocMenu", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult allocMenu(@RequestParam Long roleId,
+                                    @RequestParam(value = "menuIds") @NotEmpty String menuIdStr) {
+        List<String> stringList = Arrays.asList(menuIdStr.split(","));
+        List<Long> menuIds = stringList.stream().map(Long::parseLong).collect(Collectors.toList());
+        umsRoleService.allocMenu(roleId, menuIds);
+        return ResponseResult
+                .success(stringList.size());
     }
 
 }

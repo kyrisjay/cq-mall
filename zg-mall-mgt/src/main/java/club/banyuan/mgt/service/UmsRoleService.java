@@ -18,4 +18,6 @@ public interface UmsRoleService {
     Long delete(long ids);
 
     List<UmsMenu> listMenu(Long id);
+
+    void allocMenu(Long roleId, List<Long> menuIds);
 }

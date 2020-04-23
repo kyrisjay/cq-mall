@@ -2,6 +2,7 @@ package club.banyuan.mgt.dao;
 
 import club.banyuan.mgt.dao.entity.UmsRole;
 import club.banyuan.mgt.dao.entity.UmsRoleExample;
+import club.banyuan.mgt.dao.entity.UmsRoleMenuRelation;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -30,4 +31,8 @@ public interface UmsRoleDao {
     int updateByPrimaryKey(UmsRole record);
 
     List<UmsRole> selectByAdminId(Long adminId);
+
+    int deleteRoleMenuRelationByRoleId(Long roleId);
+
+    int insertRoleMenuRelation(UmsRoleMenuRelation relation);
 }

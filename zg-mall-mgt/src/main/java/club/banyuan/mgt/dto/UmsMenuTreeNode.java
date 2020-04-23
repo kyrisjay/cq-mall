@@ -1,4 +1,4 @@
-package club.banyuan.mgt.dao;
+package club.banyuan.mgt.dto;
 
 import java.util.Date;
 import java.util.List;

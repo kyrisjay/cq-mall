@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club.banyuan.mall.mgt.dao.UmsRoleDao">
-    <resultMap id="BaseResultMap" type="club.banyuan.mall.mgt.dao.entity.UmsRole">
+    <resultMap id="BaseResultMap" type="club.banyuan.mgt.dao.entity.UmsRole">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
@@ -77,7 +77,7 @@
     <sql id="Base_Column_alias_List">
     ur.id, ur.`name`, ur.description, ur.admin_count, ur.create_time, ur.`status`, ur.sort
   </sql>
-    <select id="selectByExample" parameterType="club.banyuan.mall.mgt.dao.entity.UmsRoleExample"
+    <select id="selectByExample" parameterType="club.banyuan.mgt.dao.entity.UmsRoleExample"
             resultMap="BaseResultMap">
         select
         <if test="distinct">
@@ -103,14 +103,19 @@
     FROM ums_role
     WHERE id = #{id,jdbcType=BIGINT}
   </delete>
-    <delete id="deleteByExample" parameterType="club.banyuan.mall.mgt.dao.entity.UmsRoleExample">
+    <delete id="deleteByExample" parameterType="club.banyuan.mgt.dao.entity.UmsRoleExample">
         delete from ums_role
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
+    <delete id="deleteRoleMenuRelationByRoleId">
+    DELETE
+    FROM ums_role_menu_relation
+    WHERE role_id = #{roleId,jdbcType=BIGINT}
+  </delete>
     <insert id="insert" keyColumn="id" keyProperty="id"
-            parameterType="club.banyuan.mall.mgt.dao.entity.UmsRole" useGeneratedKeys="true">
+            parameterType="club.banyuan.mgt.dao.entity.UmsRole" useGeneratedKeys="true">
     INSERT INTO ums_role (`name`, description, admin_count,
                           create_time, `status`, sort)
     VALUES (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
@@ -118,7 +123,7 @@
             #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
-            parameterType="club.banyuan.mall.mgt.dao.entity.UmsRole" useGeneratedKeys="true">
+            parameterType="club.banyuan.mgt.dao.entity.UmsRole" useGeneratedKeys="true">
         insert into ums_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">
@@ -161,7 +166,12 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="club.banyuan.mall.mgt.dao.entity.UmsRoleExample"
+    <insert id="insertRoleMenuRelation" keyColumn="id" keyProperty="id"
+            parameterType="club.banyuan.mgt.dao.entity.UmsRoleMenuRelation" useGeneratedKeys="true">
+    INSERT INTO ums_role_menu_relation (role_id, menu_id)
+    VALUES (#{roleId}, #{menuId})
+  </insert>
+    <select id="countByExample" parameterType="club.banyuan.mgt.dao.entity.UmsRoleExample"
             resultType="java.lang.Long">
         select count(*) from ums_role
         <if test="_parameter != null">
@@ -217,7 +227,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="club.banyuan.mall.mgt.dao.entity.UmsRole">
+    <update id="updateByPrimaryKeySelective" parameterType="club.banyuan.mgt.dao.entity.UmsRole">
         update ums_role
         <set>
             <if test="name != null">
@@ -241,7 +251,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="club.banyuan.mall.mgt.dao.entity.UmsRole">
+    <update id="updateByPrimaryKey" parameterType="club.banyuan.mgt.dao.entity.UmsRole">
     UPDATE ums_role
     SET `name`      = #{name,jdbcType=VARCHAR},
         description = #{description,jdbcType=VARCHAR},

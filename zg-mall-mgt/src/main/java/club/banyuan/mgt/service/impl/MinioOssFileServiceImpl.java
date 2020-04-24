@@ -2,11 +2,14 @@ package club.banyuan.mgt.service.impl;
 
 
 import club.banyuan.mgt.service.OssFileService;
+
 import io.minio.ErrorCode;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.errors.ErrorResponseException;
 import io.minio.policy.PolicyType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import java.io.InputStream;
 
 @Service
 public class MinioOssFileServiceImpl implements OssFileService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MinioOssFileServiceImpl.class);
 
     @Value("${minio.endpoint}")
     private String ENDPOINT;
@@ -33,14 +38,16 @@ public class MinioOssFileServiceImpl implements OssFileService {
         try {
             MinioClient minioClient = new MinioClient(ENDPOINT, ACCESS_KEY, SECRET_KEY);
             if (!minioClient.bucketExists(BUCKET_NAME)) {
+                LOGGER.debug("桶不存在创建桶，{}",BUCKET_NAME);
                 minioClient.makeBucket(BUCKET_NAME);
                 minioClient.setBucketPolicy(BUCKET_NAME, "*.*", PolicyType.READ_WRITE);
             }
 
             minioClient.putObject(BUCKET_NAME, objectName, stream,null);
+            LOGGER.debug("上传文件成功，{}",objectName);
             return ENDPOINT + "/" + BUCKET_NAME + "/" + objectName;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("上传文件失败", e);
             throw new IOException(e);
         }
     }

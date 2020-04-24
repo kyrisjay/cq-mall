@@ -19,18 +19,20 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static club.banyuan.mgt.common.FailReason.*;
 
 
 public class UmsRoleServiceImpl implements UmsRoleService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UmsRoleServiceImpl.class);
 
     @Autowired
     private UmsRoleDao umsRoleDao;
@@ -68,6 +70,7 @@ public class UmsRoleServiceImpl implements UmsRoleService {
                 .andIdNotEqualTo(umsRoleRep.getId());
 
         if (umsRoleDao.countByExample(umsRoleExample) > 0) {
+            LOGGER.warn("用户名冲突，{}", umsRoleRep.getName());
             throw new RequestFailException(UMS_ROLE_NAME_DUPLICATE);
         }
 
@@ -75,6 +78,8 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         UmsRole umsRole = new UmsRole();
         BeanUtil.copyProperties(umsRoleRep, umsRole);
 
+        umsRole.setCreateTime(new Date());
+        umsRole.setSort(0);
         umsRoleDao.insert(umsRole);
         return umsRole.getId();
     }
@@ -103,6 +108,7 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         return umsMenuDao.selectByRoleIds(Collections.singletonList(id));
     }
 
+    @Transactional
     @Override
     public void allocMenu(Long roleId, List<Long> menuIds) {
         UmsRoleExample umsRoleExample = new UmsRoleExample();

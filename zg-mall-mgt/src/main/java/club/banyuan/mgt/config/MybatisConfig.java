@@ -2,8 +2,11 @@ package club.banyuan.mgt.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@MapperScan("club.banyuan.demo.authorization.dao")
+@EnableTransactionManagement
+@MapperScan("club.banyuan.mgt.dao")
 public class MybatisConfig {
+
 }

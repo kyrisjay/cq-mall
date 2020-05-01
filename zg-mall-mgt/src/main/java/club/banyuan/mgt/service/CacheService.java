@@ -1,6 +1,7 @@
 package club.banyuan.mgt.service;
 
 public interface CacheService {
+
     void set(String key, Object value);
 
     <T> T get(String key);

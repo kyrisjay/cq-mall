@@ -1,17 +1,16 @@
-package club.banyuan.mgt.dao.entity;
+package club.banyuan.mgt.dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-/**
- * ums_admin
- * @author
- */
-public class UmsAdmin implements Serializable {
+public class UmsAdminReq {
     private Long id;
 
+    @NotBlank(message = "用户名不能为空")
     private String username;
-
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
@@ -22,11 +21,13 @@ public class UmsAdmin implements Serializable {
     /**
      * 邮箱
      */
+    @NotBlank(message = "邮箱不能为空")
     private String email;
 
     /**
      * 昵称
      */
+    @NotBlank(message = "姓名不能为空")
     private String nickName;
 
     /**
@@ -37,12 +38,12 @@ public class UmsAdmin implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 最后登录时间
      */
-    private Date loginTime;
+    private String loginTime;
 
     /**
      * 帐号启用状态：0->禁用；1->启用
@@ -107,19 +108,19 @@ public class UmsAdmin implements Serializable {
         this.note = note;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getLoginTime() {
+    public String getLoginTime() {
         return loginTime;
     }
 
-    public void setLoginTime(Date loginTime) {
+    public void setLoginTime(String loginTime) {
         this.loginTime = loginTime;
     }
 

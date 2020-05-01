@@ -28,7 +28,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/admin/login").antMatchers(HttpMethod.OPTIONS,"/**");
+        web.ignoring().antMatchers("/admin/login").antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.exceptionHandling().authenticationEntryPoint(new AuthenticationFailHandler());
+        http.exceptionHandling().authenticationEntryPoint(new AuthenticationFailHandler()).accessDeniedHandler(new AuthenticationFailHandler());
 
         http.authorizeRequests().anyRequest().authenticated();
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
@@ -54,4 +54,8 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+// @Bean
+// public UserDetailsService userDetailsService() {
+//
+// }
 }

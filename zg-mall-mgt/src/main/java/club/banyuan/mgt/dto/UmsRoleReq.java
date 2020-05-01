@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class UmsRoleRep {
+public class UmsRoleReq {
     private Long id;
 
     /**
@@ -94,3 +94,4 @@ public class UmsRoleRep {
         this.sort = sort;
     }
 }
+

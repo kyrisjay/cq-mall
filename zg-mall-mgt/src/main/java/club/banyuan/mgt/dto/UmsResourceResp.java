@@ -1,13 +1,17 @@
-package club.banyuan.mgt.dao.entity;
+package club.banyuan.mgt.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-/**
- * ums_resource
- * @author
- */
-public class UmsResource implements Serializable {
+public class UmsResourceResp {
+    /**
+     * id : 1
+     * createTime : 2020-02-04T09:04:55.000+0000
+     * name : 商品品牌管理
+     * url : /brand/**
+     * description : null
+     * categoryId : 1
+     */
+
     private Long id;
 
     /**

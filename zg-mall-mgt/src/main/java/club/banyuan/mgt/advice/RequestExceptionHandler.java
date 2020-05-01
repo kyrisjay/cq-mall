@@ -19,8 +19,8 @@ public class RequestExceptionHandler {
         return ResponseResult.badRequest(e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseResult runtimeException(RuntimeException e) {
-        return ResponseResult.failed(e.getMessage());
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public ResponseResult runtimeException(RuntimeException e) {
+//        return ResponseResult.failed(e.getMessage());
+//    }
 }

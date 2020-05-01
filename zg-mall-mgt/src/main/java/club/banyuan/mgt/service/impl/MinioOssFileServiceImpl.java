@@ -38,28 +38,17 @@ public class MinioOssFileServiceImpl implements OssFileService {
         try {
             MinioClient minioClient = new MinioClient(ENDPOINT, ACCESS_KEY, SECRET_KEY);
             if (!minioClient.bucketExists(BUCKET_NAME)) {
-                LOGGER.debug("桶不存在创建桶，{}",BUCKET_NAME);
+                LOGGER.debug("桶不存在创建桶，{}", BUCKET_NAME);
                 minioClient.makeBucket(BUCKET_NAME);
                 minioClient.setBucketPolicy(BUCKET_NAME, "*.*", PolicyType.READ_WRITE);
             }
 
-            minioClient.putObject(BUCKET_NAME, objectName, stream,null);
-            LOGGER.debug("上传文件成功，{}",objectName);
+            minioClient.putObject(BUCKET_NAME, objectName, stream, null);
+            LOGGER.debug("上传文件成功，{}", objectName);
             return ENDPOINT + "/" + BUCKET_NAME + "/" + objectName;
         } catch (Exception e) {
             LOGGER.error("上传文件失败", e);
             throw new IOException(e);
-        }
-    }
-
-    @Override
-    public InputStream download(String objectName) throws IOException {
-        try {
-            MinioClient minioClient = new MinioClient(ENDPOINT, ACCESS_KEY, SECRET_KEY);
-            return minioClient.getObject(BUCKET_NAME, objectName);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IOException();
         }
     }
 

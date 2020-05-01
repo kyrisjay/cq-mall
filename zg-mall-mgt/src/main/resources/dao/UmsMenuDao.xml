@@ -41,6 +41,13 @@
         <include refid="Base_Column_List"/>
         from ums_menu
     </select>
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ums_menu
+        where parent_id = #{menuParentId,jdbcType=BIGINT}
+
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     DELETE

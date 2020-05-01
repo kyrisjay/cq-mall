@@ -7,7 +7,7 @@ import java.util.List;
 public interface UmsMenuDao {
     int deleteByPrimaryKey(Long id);
 
-    int insert(UmsMenu record);
+    long insert(UmsMenu record);
 
     int insertSelective(UmsMenu record);
 
@@ -20,4 +20,6 @@ public interface UmsMenuDao {
     List<UmsMenu> selectByRoleIds(List<Long> roleIds);
 
     List<UmsMenu> selectAll();
+
+    List<UmsMenu> selectByParentId(Long menuParentId);
 }

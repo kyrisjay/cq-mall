@@ -5,8 +5,7 @@ public enum ResponseCode {
     REQUEST_FAIL(400, "操作失败"),
     FORBIDDEN(401, "用户身份验证失败"),
     UNAUTHORIZED(403, "用户未授权"),
-    FAILED(500, "服务器内部错误")
-    ;
+    FAILED(500, "服务器内部错误");
 
     private final int code;
     private final String message;

@@ -2,6 +2,7 @@ package club.banyuan.mgt.security;
 
 
 import club.banyuan.mgt.common.ResponseResult;
+import cn.hutool.json.JSONUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -17,8 +18,7 @@ public class AuthenticationFailHandler implements AuthenticationEntryPoint, Acce
 
     @Override
     public void commence(HttpServletRequest httpServletRequest,
-                         HttpServletResponse httpServletResponse,
-                         AuthenticationException e)
+                         HttpServletResponse httpServletResponse, AuthenticationException e)
             throws IOException, ServletException {
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json");
@@ -26,13 +26,11 @@ public class AuthenticationFailHandler implements AuthenticationEntryPoint, Acce
 
     }
 
-
     @Override
-    public void handle(HttpServletRequest httpServletRequest,
-                       HttpServletResponse httpServletResponse, AccessDeniedException e)
-            throws IOException, ServletException {
+    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                       AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json");
-        httpServletResponse.getWriter().println(ResponseResult.unauthorized());
+        httpServletResponse.getWriter().println(JSONUtil.toJsonStr(ResponseResult.unauthorized()));
     }
 }

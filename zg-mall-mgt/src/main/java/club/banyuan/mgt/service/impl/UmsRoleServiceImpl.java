@@ -10,7 +10,7 @@ import club.banyuan.mgt.dao.entity.UmsRole;
 import club.banyuan.mgt.dao.entity.UmsRoleExample;
 import club.banyuan.mgt.dao.entity.UmsRoleMenuRelation;
 import club.banyuan.mgt.dto.UmsMenuTreeNode;
-import club.banyuan.mgt.dto.UmsRoleRep;
+import club.banyuan.mgt.dto.UmsRoleReq;
 import club.banyuan.mgt.dto.UmsRoleResp;
 import club.banyuan.mgt.service.UmsMenuService;
 import club.banyuan.mgt.service.UmsRoleService;
@@ -22,6 +22,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 import static club.banyuan.mgt.common.FailReason.*;
 
-
+@Service
 public class UmsRoleServiceImpl implements UmsRoleService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsRoleServiceImpl.class);
@@ -45,13 +46,13 @@ public class UmsRoleServiceImpl implements UmsRoleService {
 
     @Override
     public ResponsePages<UmsRoleResp> listByPages(Integer pageNum, Integer pageSize, String keyword) {
-
         PageHelper.startPage(pageNum, pageSize);
         UmsRoleExample umsRoleExample = new UmsRoleExample();
         if (keyword != null) {
             UmsRoleExample.Criteria criteria = umsRoleExample.createCriteria();
             criteria.andNameLike(StrUtil.concat(false, "%", keyword, "%"));
         }
+
         List<UmsRole> umsRoleList = umsRoleDao.selectByExample(umsRoleExample);
         PageInfo<UmsRole> pageInfo = new PageInfo<>(umsRoleList);
 
@@ -63,21 +64,19 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         return ResponsePages.setPages(pageInfo, umsRoleRespList);
     }
 
+    @Transactional
     @Override
-    public Long create(UmsRoleRep umsRoleRep) {
+    public Long create(UmsRoleReq umsRoleReq) {
         UmsRoleExample umsRoleExample = new UmsRoleExample();
-        umsRoleExample.createCriteria().andNameEqualTo((umsRoleRep.getName()))
-                .andIdNotEqualTo(umsRoleRep.getId());
+        umsRoleExample.createCriteria().andNameEqualTo(umsRoleReq.getName());
 
         if (umsRoleDao.countByExample(umsRoleExample) > 0) {
-            LOGGER.warn("用户名冲突，{}", umsRoleRep.getName());
+            LOGGER.warn("用户名冲突，{}", umsRoleReq.getName());
             throw new RequestFailException(UMS_ROLE_NAME_DUPLICATE);
         }
 
-
         UmsRole umsRole = new UmsRole();
-        BeanUtil.copyProperties(umsRoleRep, umsRole);
-
+        BeanUtil.copyProperties(umsRoleReq, umsRole);
         umsRole.setCreateTime(new Date());
         umsRole.setSort(0);
         umsRoleDao.insert(umsRole);
@@ -85,27 +84,37 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     }
 
     @Override
-    public Long update(UmsRoleRep umsRoleRep, Long id) {
+    public Long update(UmsRoleReq umsRoleReq) {
+
+        UmsRoleExample umsRoleExample = new UmsRoleExample();
+        umsRoleExample.createCriteria().andNameEqualTo(umsRoleReq.getName())
+                .andIdNotEqualTo(umsRoleReq.getId());
+
+        if (umsRoleDao.countByExample(umsRoleExample) > 0) {
+            throw new RequestFailException(UMS_ROLE_NAME_DUPLICATE);
+        }
+
         UmsRole umsRole = new UmsRole();
-        umsRole.setName(umsRoleRep.getName());
-        umsRole.setId(umsRoleRep.getId());
-        umsRole.setDescription(umsRoleRep.getDescription());
-        umsRole.setStatus(umsRoleRep.getStatus());
+        umsRole.setName(umsRoleReq.getName());
+        umsRole.setId(umsRoleReq.getId());
+        umsRole.setDescription(umsRoleReq.getDescription());
+        umsRole.setStatus(umsRoleReq.getStatus());
         umsRoleDao.updateByPrimaryKeySelective(umsRole);
         return umsRole.getId();
     }
 
     @Override
-    public Long delete(long ids) {
+    public Long delete(Long ids) {
         if (umsRoleDao.deleteByPrimaryKey(ids) <= 0) {
             throw new RequestFailException(UMS_ADMIN_ROLE_NOT_EXIST);
         }
+
         return ids;
     }
 
     @Override
-    public List<UmsMenu> listMenu(Long id) {
-        return umsMenuDao.selectByRoleIds(Collections.singletonList(id));
+    public List<UmsMenu> listMenu(Long roleId) {
+        return umsMenuDao.selectByRoleIds(Collections.singletonList(roleId));
     }
 
     @Transactional
@@ -116,7 +125,6 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         if (umsRoleDao.countByExample(umsRoleExample) <= 0) {
             throw new RequestFailException(UMS_ADMIN_ROLE_NOT_EXIST);
         }
-
         List<UmsMenuTreeNode> list = umsMenuService.treeList();
 
         Set<Long> menuIdSet = new HashSet<>(menuIds);
@@ -128,7 +136,6 @@ public class UmsRoleServiceImpl implements UmsRoleService {
                 menuIdSet.remove(umsMenuTreeNode.getId());
             }
         }
-
         if (CollUtil.isNotEmpty(menuIdSet)) {
             throw new RequestFailException(UMS_ROLE_MENU_REL_ILLEGAL);
         }
@@ -158,5 +165,17 @@ public class UmsRoleServiceImpl implements UmsRoleService {
         //     }
         //   }
         // }
+    }
+
+    @Override
+    public List<UmsRole> listAll() {
+
+        List<UmsRole>  umsRoleRespList=umsRoleDao.listAll();
+
+        return umsRoleRespList.stream().map(t->{
+            UmsRole umsRole=new UmsRole();
+            BeanUtil.copyProperties(t,umsRole);
+            return umsRole;
+        }).collect(Collectors.toList());
     }
 }

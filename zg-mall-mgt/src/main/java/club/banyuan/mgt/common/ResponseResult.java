@@ -37,6 +37,7 @@ public class ResponseResult {
     public static ResponseResult unauthorized() {
         return new ResponseResult(ResponseCode.UNAUTHORIZED);
     }
+
     public static ResponseResult badRequest(String message) {
         return new ResponseResult(REQUEST_FAIL, message);
     }

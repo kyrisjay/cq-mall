@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class DynamicMetadataSource implements SecurityMetadataSource {
-
     @Autowired
     private UmsResourceService umsResourceService;
 
@@ -29,17 +28,16 @@ public class DynamicMetadataSource implements SecurityMetadataSource {
         String path = URLUtil.getPath(url);
         List<UmsResource> resources = umsResourceService.getAllResource();
         AntPathMatcher matcher = new AntPathMatcher();
+        // List<ConfigAttribute> list = new ArrayList<>();
+        // for (UmsResource resource : resources) {
+        //   if(matcher.match(resource.getUrl(), path)){
+        //     list.add(new ResourceConfigAttribute(resource));
+        //   }
+        // }
+        // return list;
         return resources.stream().filter(t -> matcher.match(t.getUrl(), path))
                 .map(ResourceConfigAttribute::new).collect(
                         Collectors.toList());
-
-//        List<ConfigAttribute> list =new AntPathMatcher();
-//        for (UmsResource resource : resources) {
-//            if (matcher.match(resource.getUrl(),path)){
-//                list.add(new ResourceConfigAttribute(resource));
-//            }
-//        }
-//        return list;
     }
 
     @Override

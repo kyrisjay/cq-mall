@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="club.banyuan.mall.mgt.dao.UmsRoleDao">
+<mapper namespace="club.banyuan.mgt.dao.UmsRoleDao">
     <resultMap id="BaseResultMap" type="club.banyuan.mgt.dao.entity.UmsRole">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -114,6 +114,9 @@
     FROM ums_role_menu_relation
     WHERE role_id = #{roleId,jdbcType=BIGINT}
   </delete>
+    <delete id="deleteAdminROleRelationByAdminId">
+        delete from ums_admin_role_relation where admin_id=#{adminId}
+    </delete>
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="club.banyuan.mgt.dao.entity.UmsRole" useGeneratedKeys="true">
     INSERT INTO ums_role (`name`, description, admin_count,
@@ -171,6 +174,14 @@
     INSERT INTO ums_role_menu_relation (role_id, menu_id)
     VALUES (#{roleId}, #{menuId})
   </insert>
+    <insert id="insertAdminRoleRelationByAdminId">
+        <foreach collection="roleIds" item="item" separator=";">
+            insert into ums_admin_role_relation (admin_id, role_id)
+            values
+            (#{adminId,jdbcType=BIGINT},
+            #{item,jdbcType=BIGINT})
+        </foreach>
+    </insert>
     <select id="countByExample" parameterType="club.banyuan.mgt.dao.entity.UmsRoleExample"
             resultType="java.lang.Long">
         select count(*) from ums_role
@@ -184,6 +195,11 @@
         from ums_role ur
         LEFT JOIN ums_admin_role_relation uarr ON ur.id = uarr.role_id
         where uarr.admin_id = #{adminId,jdbcType=BIGINT}
+    </select>
+    <select id="listAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ums_role
     </select>
     <update id="updateByExampleSelective" parameterType="map">
         update ums_role

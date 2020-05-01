@@ -1,17 +1,16 @@
 package club.banyuan.mgt.controller;
 
-
 import club.banyuan.mgt.service.OssFileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/file")
@@ -20,7 +19,6 @@ public class FileController {
     @Autowired
     private OssFileService ossFileService;
 
-    public static String SAVE_IMG_TO_LOACL = "/Users/edz/Downloads";
 
     @RequestMapping(value = "/image/upload", method = RequestMethod.POST)
     @ResponseBody
@@ -48,18 +46,5 @@ public class FileController {
             e.printStackTrace();
         }
         return "fail";
-    }
-
-    @RequestMapping(value = "/image/download",method = RequestMethod.GET)
-    public String download(@RequestParam("filename")String filename) throws IOException {
-
-        InputStream download = ossFileService.download(filename);
-        if (download==null){
-            return "没有该文件";
-        }else {
-            Files.copy(download, Paths.get(SAVE_IMG_TO_LOACL, filename));
-            return "success";
-        }
-
     }
 }

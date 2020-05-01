@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHead.substring(SCHEMA.length());
             try {
                 UserDetails userDetails = adminService.getUserDetailsByToken(token);
+
                 if (userDetails != null) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
@@ -44,9 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             } catch (Exception e) {
-               LOGGER.warn("认证异常，e");
+                LOGGER.warn("认证异常", e);
             }
         }
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

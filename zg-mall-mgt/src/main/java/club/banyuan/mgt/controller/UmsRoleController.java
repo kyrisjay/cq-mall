@@ -1,17 +1,22 @@
 package club.banyuan.mgt.controller;
 
 import club.banyuan.mgt.common.ResponseResult;
-import club.banyuan.mgt.dto.UmsRoleRep;
+import club.banyuan.mgt.dto.UmsRoleReq;
 import club.banyuan.mgt.service.UmsRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/role")
@@ -25,25 +30,26 @@ public class UmsRoleController {
     public ResponseResult list(
             @RequestParam Integer pageNum,
             @RequestParam Integer pageSize,
-            @RequestParam(required = false) String keyword
-    ) {
-        return ResponseResult.success(umsRoleService.listByPages(pageNum, pageSize, keyword));
+            @RequestParam(required = false) String keyword) {
+        return ResponseResult
+                .success(umsRoleService.listByPages(pageNum, pageSize, keyword));
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult create(@RequestBody @Valid UmsRoleRep umsRoleRep) {
+    public ResponseResult create(@RequestBody @Valid UmsRoleReq umsRoleReq) {
 
         return ResponseResult
-                .success(umsRoleService.create(umsRoleRep));
+                .success(umsRoleService.create(umsRoleReq));
     }
+
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult update(@RequestBody @Valid UmsRoleRep umsRoleRep, @PathVariable Long id) {
+    public ResponseResult update(@RequestBody @Valid UmsRoleReq umsRoleReq) {
 
         return ResponseResult
-                .success(umsRoleService.update(umsRoleRep, id));
+                .success(umsRoleService.update(umsRoleReq));
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -57,6 +63,7 @@ public class UmsRoleController {
     @RequestMapping(value = "/listMenu/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseResult listMenu(@PathVariable @NotNull Long id) {
+
         return ResponseResult
                 .success(umsRoleService.listMenu(id));
     }
@@ -71,5 +78,12 @@ public class UmsRoleController {
         return ResponseResult
                 .success(stringList.size());
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/listAll",method = RequestMethod.GET)
+    public ResponseResult allList(){
+        return ResponseResult.success(umsRoleService.listAll());
+    }
+
 
 }

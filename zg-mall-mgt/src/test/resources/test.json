@@ -1,0 +1,92 @@
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "pageNum": 1,
+    "pageSize": 10,
+    "totalPage": 3,
+    "total": 28,
+    "list": [
+      {
+        "id": 1,
+        "createTime": "2020-02-04T09:04:55.000+0000",
+        "name": "商品品牌管理",
+        "url": "/brand/**",
+        "description": null,
+        "categoryId": 1
+      },
+      {
+        "id": 2,
+        "createTime": "2020-02-04T09:05:35.000+0000",
+        "name": "商品属性分类管理",
+        "url": "/productAttribute/**",
+        "description": null,
+        "categoryId": 1
+      },
+      {
+        "id": 3,
+        "createTime": "2020-02-04T09:06:13.000+0000",
+        "name": "商品属性管理",
+        "url": "/productAttribute/**",
+        "description": null,
+        "categoryId": 1
+      },
+      {
+        "id": 4,
+        "createTime": "2020-02-04T09:07:15.000+0000",
+        "name": "商品分类管理",
+        "url": "/productCategory/**",
+        "description": null,
+        "categoryId": 1
+      },
+      {
+        "id": 5,
+        "createTime": "2020-02-04T09:09:16.000+0000",
+        "name": "商品管理",
+        "url": "/product/**",
+        "description": null,
+        "categoryId": 1
+      },
+      {
+        "id": 6,
+        "createTime": "2020-02-04T09:09:53.000+0000",
+        "name": "商品库存管理",
+        "url": "/sku/**",
+        "description": null,
+        "categoryId": 1
+      },
+      {
+        "id": 8,
+        "createTime": "2020-02-05T06:43:37.000+0000",
+        "name": "订单管理",
+        "url": "/order/**",
+        "description": "",
+        "categoryId": 2
+      },
+      {
+        "id": 9,
+        "createTime": "2020-02-05T06:44:22.000+0000",
+        "name": " 订单退货申请管理",
+        "url": "/returnApply/**",
+        "description": "",
+        "categoryId": 2
+      },
+      {
+        "id": 10,
+        "createTime": "2020-02-05T06:45:08.000+0000",
+        "name": "退货原因管理",
+        "url": "/returnReason/**",
+        "description": "",
+        "categoryId": 2
+      },
+      {
+        "id": 11,
+        "createTime": "2020-02-05T06:45:43.000+0000",
+        "name": "订单设置管理",
+        "url": "/orderSetting/**",
+        "description": "",
+        "categoryId": 2
+      }
+    ]
+  }
+}

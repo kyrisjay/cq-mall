@@ -14,6 +14,7 @@ public enum FailReason {
     UMS_RESOURCE_NAME_DUPLICATE("资源名或URL冲突"),
     UMS_RESOURCE_CATEGORY_NOT_EXIST("资源分类不存在"),
     UMS_RESOURCE_CATEGORY_NAME_DUPLICATE("资源分类名冲突"),
+    PMS_PRODUCT_NOT_EXIST("商品不存在"),
     UMS_ADMIN_NAME_DUPLICATE("角色名冲突");
 
     private final String message;

@@ -19,9 +19,9 @@ public interface PmsProductService {
 
     Integer update(CreateProductReq createProductReq, Long productId) throws IOException;
 
-//    Integer publishStatus(List<Long> ids, Integer publishStatus);
-//
-//    Integer recommendStatus(List<Long> ids, Integer recommendStatus);
-//
-//    Integer newStatus(List<Long> ids, Integer newStatus);
+    Integer publishStatus(List<Long> ids, Integer publishStatus);
+
+    Integer recommendStatus(List<Long> ids, Integer recommendStatus);
+
+    Integer newStatus(List<Long> ids, Integer newStatus);
 }

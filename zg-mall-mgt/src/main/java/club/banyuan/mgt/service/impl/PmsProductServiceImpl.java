@@ -10,6 +10,7 @@ import club.banyuan.mgt.dto.PmsProductInfoResp;
 import club.banyuan.mgt.service.OssFileService;
 import club.banyuan.mgt.service.PmsProductService;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
@@ -224,14 +225,30 @@ public class PmsProductServiceImpl implements PmsProductService {
         List<CmsPrefrenceAreaProductRelation> cmsPrefrenceAreaProductRelations = cmsPrefrenceAreaProductRelationDao.selectByProductId(productId);
         PmsProductInfoResp pmsProductInfoResp = new PmsProductInfoResp();
         pmsProductInfoResp.setPmsProduct(pmsProduct);
-        pmsProductInfoResp.setSmsFlashPromotionProductRelation(smsFlashPromotionProductRelations.get(0));
-        pmsProductInfoResp.setMemberPriceList(pmsMemberPrices);
-        pmsProductInfoResp.setProductFullReductionList(pmsProductFullReductions);
-        pmsProductInfoResp.setProductLadderList(pmsProductLadders);
-        pmsProductInfoResp.setProductAttributeValueList(pmsProductAttributeValues);
-        pmsProductInfoResp.setSkuStockList(pmsSkuStocks);
-        pmsProductInfoResp.setSubjectProductRelationList(cmsSubjectProductRelations);
-        pmsProductInfoResp.setPrefrenceAreaProductRelationList(cmsPrefrenceAreaProductRelations);
+        if(CollUtil.isNotEmpty(smsFlashPromotionProductRelations)) {
+            pmsProductInfoResp.setSmsFlashPromotionProductRelation(smsFlashPromotionProductRelations.get(0));
+        }
+        if(CollUtil.isNotEmpty(pmsMemberPrices)) {
+            pmsProductInfoResp.setMemberPriceList(pmsMemberPrices);
+        }
+        if(CollUtil.isNotEmpty(pmsProductFullReductions)) {
+            pmsProductInfoResp.setProductFullReductionList(pmsProductFullReductions);
+        }
+        if(CollUtil.isNotEmpty(pmsProductLadders)) {
+            pmsProductInfoResp.setProductLadderList(pmsProductLadders);
+        }
+        if(CollUtil.isNotEmpty(pmsProductAttributeValues)) {
+            pmsProductInfoResp.setProductAttributeValueList(pmsProductAttributeValues);
+        }
+        if(CollUtil.isNotEmpty(pmsSkuStocks)) {
+            pmsProductInfoResp.setSkuStockList(pmsSkuStocks);
+        }
+        if(CollUtil.isNotEmpty(cmsSubjectProductRelations)) {
+            pmsProductInfoResp.setSubjectProductRelationList(cmsSubjectProductRelations);
+        }
+        if(CollUtil.isNotEmpty(cmsPrefrenceAreaProductRelations)) {
+            pmsProductInfoResp.setPrefrenceAreaProductRelationList(cmsPrefrenceAreaProductRelations);
+        }
         return pmsProductInfoResp;
     }
 
@@ -356,20 +373,20 @@ public class PmsProductServiceImpl implements PmsProductService {
         return i;
     }
 
-//    @Override
-//    public Integer publishStatus(List<Long> ids, Integer publishStatus) {
-//        return pmsProductDao.updatePublishStatusByIds(ids,publishStatus);
-//    }
-//
-//    @Override
-//    public Integer recommendStatus(List<Long> ids, Integer recommendStatus) {
-//        return pmsProductDao.updateRecommendStatusByIds(ids,recommendStatus);
-//    }
-//
-//    @Override
-//    public Integer newStatus(List<Long> ids, Integer newStatus) {
-//        return pmsProductDao.updateNewStatusByIds(ids, newStatus);
-//    }
+    @Override
+    public Integer publishStatus(List<Long> ids, Integer publishStatus) {
+        return pmsProductDao.updatePublishStatusByIds(ids,publishStatus);
+    }
+
+    @Override
+    public Integer recommendStatus(List<Long> ids, Integer recommendStatus) {
+        return pmsProductDao.updateRecommendStatusByIds(ids,recommendStatus);
+    }
+
+    @Override
+    public Integer newStatus(List<Long> ids, Integer newStatus) {
+        return pmsProductDao.updateNewStatusByIds(ids, newStatus);
+    }
 
 
 }

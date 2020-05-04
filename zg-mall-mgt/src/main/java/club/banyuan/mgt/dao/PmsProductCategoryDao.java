@@ -29,4 +29,8 @@ public interface PmsProductCategoryDao {
     int updateByPrimaryKey(PmsProductCategory record);
 
     List<PmsProductCategory> selectAll();
+
+    Integer updateNavStatusById(Long ids, Integer navStatus);
+
+    Integer updateShowStatusById(Long ids, Integer showStatus);
 }

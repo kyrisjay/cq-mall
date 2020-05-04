@@ -1,5 +1,6 @@
 package club.banyuan.mgt.dao;
 
+import club.banyuan.mgt.dao.entity.PmsProductAttribute;
 import club.banyuan.mgt.dao.entity.PmsProductAttributeCategory;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface PmsProductAttributeCategoryDao {
     int updateByPrimaryKey(PmsProductAttributeCategory record);
 
     List<PmsProductAttributeCategory> selectAll();
+
 }

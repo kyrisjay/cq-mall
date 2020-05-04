@@ -27,4 +27,10 @@ public interface PmsBrandDao {
     int updateByPrimaryKeySelective(PmsBrand record);
 
     int updateByPrimaryKey(PmsBrand record);
+
+    List<PmsBrand> selectAll();
+
+    Integer updateShowStatusByBrandIds(List<Long> brandIds, Integer showStatus);
+
+    Integer updateFactoryStatusByBrandIds(List<Long> brandIds, Integer factoryStatus);
 }

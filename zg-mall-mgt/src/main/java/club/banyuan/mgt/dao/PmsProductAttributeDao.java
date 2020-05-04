@@ -2,6 +2,8 @@ package club.banyuan.mgt.dao;
 
 import club.banyuan.mgt.dao.entity.PmsProductAttribute;
 
+import java.util.List;
+
 public interface PmsProductAttributeDao {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,6 @@ public interface PmsProductAttributeDao {
     int updateByPrimaryKeySelective(PmsProductAttribute record);
 
     int updateByPrimaryKey(PmsProductAttribute record);
+
+    List<PmsProductAttribute> selectByProductAttributeCategoryId(Long productAttributeCategoryId);
 }

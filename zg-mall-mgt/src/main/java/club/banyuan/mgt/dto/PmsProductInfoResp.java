@@ -90,7 +90,7 @@ public class PmsProductInfoResp {
     private String productCategoryName;
     private String productSn;
     private Date promotionEndTime;
-    private int promotionPerLimit;
+    private Integer promotionPerLimit;
     private BigDecimal promotionPrice;
     private Date promotionStartTime;
     private int promotionType;
@@ -353,11 +353,11 @@ public class PmsProductInfoResp {
         this.promotionEndTime = promotionEndTime;
     }
 
-    public int getPromotionPerLimit() {
+    public Integer getPromotionPerLimit() {
         return promotionPerLimit;
     }
 
-    public void setPromotionPerLimit(int promotionPerLimit) {
+    public void setPromotionPerLimit(Integer promotionPerLimit) {
         this.promotionPerLimit = promotionPerLimit;
     }
 

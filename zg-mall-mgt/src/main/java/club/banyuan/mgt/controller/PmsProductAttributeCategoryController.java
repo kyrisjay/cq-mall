@@ -18,4 +18,29 @@ public class PmsProductAttributeCategoryController {
                                @RequestParam("pageSize") Integer pageSize){
         return ResponseResult.success(pmsProductAttributeCategoryService.list(pageNum,pageSize));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/list/withAttr",method = RequestMethod.GET)
+    public ResponseResult listWithAttr(){
+        return ResponseResult.success(pmsProductAttributeCategoryService.listWithAttr());
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public ResponseResult create(@RequestParam("name") String name){
+        return ResponseResult.success(pmsProductAttributeCategoryService.create(name));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/update/{id}",method = RequestMethod.POST)
+    public ResponseResult update(@RequestParam("name") String name,
+                                 @PathVariable("id") Long id){
+        return ResponseResult.success(pmsProductAttributeCategoryService.update(name,id));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
+    public ResponseResult delete(@PathVariable("id") Long id){
+        return ResponseResult.success(pmsProductAttributeCategoryService.delete(id));
+    }
 }

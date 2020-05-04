@@ -317,4 +317,16 @@
       description = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <update id="updateNavStatusById">
+       update pms_product_category
+    set
+      nav_status = #{navStatus,jdbcType=INTEGER}
+    where id = #{ids,jdbcType=BIGINT}
+    </update>
+  <update id="updateShowStatusById">
+    update pms_product_category
+    set
+      show_status = #{showStatus,jdbcType=INTEGER}
+    where id = #{ids,jdbcType=BIGINT}
+  </update>
 </mapper>

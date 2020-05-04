@@ -189,7 +189,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pms_brand
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update pms_brand
     <set>
       <if test="record.id != null">
@@ -296,5 +301,21 @@
       big_pic = #{bigPic,jdbcType=VARCHAR},
       brand_story = #{brandStory,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateShowStatusByBrandIds">
+    update pms_brand
+    set
+    show_status = #{showStatus,jdbcType=INTEGER}
+    where id in <foreach collection="brandIds" item="item" open="(" close=")" separator=",">
+    #{item,jdbcType=BIGINT}
+    </foreach>
+  </update>
+  <update id="updateFactoryStatusByBrandIds">
+    update pms_brand
+    set
+    factory_status = #{factoryStatus,jdbcType=INTEGER}
+    where id in <foreach collection="brandIds" item="item" open="(" close=")" separator=",">
+    #{item,jdbcType=BIGINT}
+  </foreach>
   </update>
 </mapper>

@@ -37,6 +37,10 @@
       #{item,jdbcType=BIGINT}
     </foreach>
     </delete>
+    <delete id="deleteBySmsFlashProMotionId">
+      delete from sms_flash_promotion_product_relation
+    where flash_promotion_id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="club.banyuan.mgt.dao.entity.SmsFlashPromotionProductRelation" useGeneratedKeys="true">
     insert into sms_flash_promotion_product_relation (flash_promotion_id, flash_promotion_session_id, 
       product_id, flash_promotion_price, flash_promotion_count, 

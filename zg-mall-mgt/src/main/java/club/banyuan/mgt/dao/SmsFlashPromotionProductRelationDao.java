@@ -20,4 +20,6 @@ public interface SmsFlashPromotionProductRelationDao {
     int deleteByProductIds(List<Long> ids);
 
     List<SmsFlashPromotionProductRelation> selectByProductId(Long productId);
+
+    Integer deleteBySmsFlashProMotionId(Long id);
 }

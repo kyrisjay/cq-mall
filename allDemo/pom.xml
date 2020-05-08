@@ -14,7 +14,7 @@
 
     <modules>
         <module>oss</module>
-        <module>oss</module>
+<!--        <module>oss</module>-->
         <module>redis</module>
         <module>jwt</module>
         <module>authentication</module>

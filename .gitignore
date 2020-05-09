@@ -2,3 +2,11 @@
 /zg-mall-mgt/target/
 /zg-mall-mgt/zgmallmgt.iml
 /zgmail.iml
+/allDemo/redis/target/
+/allDemo/authentication/target/
+/allDemo/authorization/target/
+/allDemo/jwt/target/
+/allDemo/oss/target/
+/.idea/
+.DS_Store
+

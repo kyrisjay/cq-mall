@@ -69,6 +69,8 @@
     </dependencyManagement>
 
 
+
+
     <repositories>
         <repository>
             <id>aliyun-nexus</id>

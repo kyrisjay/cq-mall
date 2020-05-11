@@ -54,8 +54,4 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-// @Bean
-// public UserDetailsService userDetailsService() {
-//
-// }
 }
